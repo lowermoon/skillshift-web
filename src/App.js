@@ -10,8 +10,9 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<HomePage title='Homepage' />} />
-        <Route path="/signin" element={<LoginPage title='Sign in' />} />
         <Route path="/signup" element={<RegisterPage title='Sign up' />} />
+        <Route path="/signin" element={<LoginPage title='Sign in' />} />
+        <Route path="*" element={<h1>Not Found</h1>} />
       </Routes>
     </Router>
   );
