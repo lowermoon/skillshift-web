@@ -91,10 +91,51 @@ export default function LoginPage({ title }) {
             didOpen: async () => {
                 const responseUser = await loginUser(username, password);
                 const responseFreelancer = await loginFreelancer(username, password);
-                // console.clear();
+                console.clear();
 
-                console.log(responseUser);
-                console.log(responseFreelancer);
+                if(responseUser.status === 201) {
+                    return mySwal.fire({
+                        icon: 'success',
+                        html: (
+                            <div className="">
+                                <h1 className="text-green-600 font-bold font-nunito text-3xl">
+                                    Berhasil Masuk
+                                </h1>
+                                <p className="text-white font-quicksand">
+                                    Anda akan diarahkan ke halaman dashboard.
+                                </p>
+                            </div>
+                        ),
+                        timer: 3000,
+                        allowOutsideClick: false,
+                        showConfirmButton: false,
+                        didOpen: () => {
+                            console.clear();
+                        }
+                    })
+                }
+
+                if(responseFreelancer.status === 201) {
+                    return mySwal.fire({
+                        icon: 'success',
+                        html: (
+                            <div className="">
+                                <h1 className="text-green-600 font-bold font-nunito text-3xl">
+                                    Berhasil Masuk
+                                </h1>
+                                <p className="text-white font-quicksand">
+                                    Anda akan diarahkan ke halaman dashboard.
+                                </p>
+                            </div>
+                        ),
+                        timer: 3000,
+                        allowOutsideClick: false,
+                        showConfirmButton: false,
+                        didOpen: () => {
+                            console.clear();
+                        }
+                    })
+                }
 
                 return mySwal.fire({
                     icon: 'error',
@@ -112,6 +153,9 @@ export default function LoginPage({ title }) {
                     allowOutsideClick: false,
                     showConfirmButton: true,
                     confirmButtonColor: '#fb923c',
+                    didOpen: () => {
+                        console.clear();
+                    }
                 })
             }
         })
