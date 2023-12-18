@@ -91,7 +91,7 @@ export default function LoginPage({ title }) {
             didOpen: async () => {
                 const responseUser = await loginUser(username, password);
                 const responseFreelancer = await loginFreelancer(username, password);
-                console.clear();
+                // console.clear();
 
                 console.log(responseUser);
                 console.log(responseFreelancer);
@@ -112,9 +112,6 @@ export default function LoginPage({ title }) {
                     allowOutsideClick: false,
                     showConfirmButton: true,
                     confirmButtonColor: '#fb923c',
-                    didOpen: () => {
-                        console.clear();
-                    }
                 })
             }
         })
