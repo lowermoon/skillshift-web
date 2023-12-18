@@ -1,7 +1,9 @@
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { useState } from "react";
+import Aos from "aos";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import 'aos/dist/aos.css';
 
 export default function HomePage({ title }) {
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0});
@@ -13,6 +15,11 @@ export default function HomePage({ title }) {
         setMousePosition(state => ({ ...state, x, y }));
     }
     document.body.classList.add('bg-zinc-900');
+
+    useEffect(() => {
+        Aos.init({ duration: 2000 });
+    }, [])
+
     return (
         <div className="relative w-full overflow-hidden">
             <div className="fixed top-0 left-0 backdrop-blur-lg w-full h-20 z-50 flex justify-between items-center px-20">
@@ -56,54 +63,11 @@ export default function HomePage({ title }) {
             </div>
             <div className="relative w-full h-screen overflow-hidden">
                 <img className="absolute top-0 left-0 w-full -z-50 opacity-50" src="/bg/grid-pattern-2.png" alt="" />
-                <div className="absolute top-0 left-0 w-[200px] h-[200px] bg-yellow-300 opacity-50 rounded-full blur-3xl translate-y-[300px] scale-150 -translate-x-[200px]"></div>
-                <div className="absolute top-0 left-0 w-full h-full z-10">
-                    <div className="flex items-center justify-center gap-5 w-full h-full flex-wrap">
-                        <div onMouseMove={(e) => mouseOver(e)} onMouseOver={() => setHoverActive(state => !state)} className="group relative overflow-hidden p-5 rounded-3xl border border-zinc-500 w-1/3 h-60 bg-zinc-900/80">
-                            <div style={{top: mousePosition.y - 5, left: mousePosition.x}} className={`absolute w-[200px] h-[200px] rounded-full bg-yellow-600 blur-3xl -translate-x-16 -translate-y-16 group-hover:opacity-100 opacity-0 transition-opacity duration-300 -z-40`}></div>
-                            <div className="absolute top-0 left-0 w-full h-full p-5 z-10">
-                                <h1 className="font-nunito text-white font-bold text-2xl rounded-2xl p-2 px-4 bg-zinc-900/50 w-fit">
-                                    Tujuan 1
-                                </h1>
-                                <hr className="my-3 opacity-0" />
-                                <p className="text-white font-quicksand text-sm">
-                                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Minima, fugit aut. Quas esse eum voluptate sint accusamus quae ea architecto cupiditate nisi. Veniam beatae ullam, pariatur sunt voluptatibus tenetur id?
-                                </p>
-                            </div>
-                            <FontAwesomeIcon icon={faStar} className="text-zinc-700 text-[200px] absolute bottom-0 right-0 -z-50 translate-y-10 translate-x-10" />
-                        </div>
-                        <div onMouseMove={(e) => mouseOver(e)} onMouseOver={() => setHoverActive(state => !state)} className="group relative overflow-hidden p-5 rounded-3xl border border-zinc-500 w-1/3 h-60 bg-zinc-900/80">
-                            <div style={{top: mousePosition.y - 5, left: mousePosition.x}} className={`absolute w-[200px] h-[200px] rounded-full bg-yellow-600 blur-3xl -translate-x-16 -translate-y-16 group-hover:opacity-100 opacity-0 transition-opacity duration-300 -z-40`}></div>
-                            <div className="absolute top-0 left-0 w-full h-full p-5 z-10">
-                                <h1 className="font-nunito text-white font-bold text-2xl rounded-2xl p-2 px-4 bg-zinc-900/50 w-fit">
-                                    Tujuan 1
-                                </h1>
-                                <hr className="my-3 opacity-0" />
-                                <p className="text-white font-quicksand text-sm">
-                                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Minima, fugit aut. Quas esse eum voluptate sint accusamus quae ea architecto cupiditate nisi. Veniam beatae ullam, pariatur sunt voluptatibus tenetur id?
-                                </p>
-                            </div>
-                            <FontAwesomeIcon icon={faStar} className="text-zinc-700 text-[200px] absolute bottom-0 right-0 -z-50 translate-y-10 translate-x-10" />
-                        </div>
-                        <div onMouseMove={(e) => mouseOver(e)} onMouseOver={() => setHoverActive(state => !state)} className="group relative overflow-hidden p-5 rounded-3xl border border-zinc-500 w-1/3 h-60 bg-zinc-900/80">
-                            <div style={{top: mousePosition.y - 5, left: mousePosition.x}} className={`absolute w-[200px] h-[200px] rounded-full bg-yellow-600 blur-3xl -translate-x-16 -translate-y-16 group-hover:opacity-100 opacity-0 transition-opacity duration-300 -z-40`}></div>
-                            <div className="absolute top-0 left-0 w-full h-full p-5 z-10">
-                                <h1 className="font-nunito text-white font-bold text-2xl rounded-2xl p-2 px-4 bg-zinc-900/50 w-fit">
-                                    Tujuan 1
-                                </h1>
-                                <hr className="my-3 opacity-0" />
-                                <p className="text-white font-quicksand text-sm">
-                                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Minima, fugit aut. Quas esse eum voluptate sint accusamus quae ea architecto cupiditate nisi. Veniam beatae ullam, pariatur sunt voluptatibus tenetur id?
-                                </p>
-                            </div>
-                            <FontAwesomeIcon icon={faStar} className="text-zinc-700 text-[200px] absolute bottom-0 right-0 -z-50 translate-y-10 translate-x-10" />
-                        </div>
-                    </div>
-                </div>
+                
             </div>
             <div className="relative w-full h-screen overflow-hidden">
                 <img className="absolute top-0 left-0 w-full -z-50 opacity-50" src="/bg/grid-pattern-2.png" alt="" />
-                <div className="absolute top-0 left-0 w-full h-full z-10 flex items-center gap-5">
+                <div data-aos='fade-up' className="absolute top-0 left-0 w-full h-full z-10 flex items-center gap-5">
                     <div className="w-1/2 pl-40">
                         <div className="flex gap-5 items-center">
                             <img className="w-24" src="https://static-00.iconduck.com/assets.00/google-cloud-icon-2048x1646-7admxejz.png" alt="" />
@@ -190,7 +154,7 @@ export default function HomePage({ title }) {
             </div>
             <div className="relative w-full h-screen overflow-hidden">
                 <img className="absolute top-0 left-0 w-full -z-50 opacity-50" src="/bg/grid-pattern-2.png" alt="" />
-                <div className="absolute top-0 left-0 w-full h-full z-10 flex items-center gap-5">
+                <div data-aos='fade-up' className="absolute top-0 left-0 w-full h-full z-10 flex items-center gap-5">
                     <div className="w-1/2 pl-40">
                         <div className="flex gap-5 items-center">
                             <img className="w-24" src="https://cdn-icons-png.flaticon.com/128/888/888839.png?ga=GA1.1.1610299679.1689303514&semt=ais" alt="" />
@@ -272,7 +236,7 @@ export default function HomePage({ title }) {
             </div>
             <div className="relative w-full h-screen overflow-hidden">
                 <img className="absolute top-0 left-0 w-full -z-50 opacity-50" src="/bg/grid-pattern-2.png" alt="" />
-                <div className="absolute top-0 left-0 w-full h-full z-10 flex items-center gap-5">
+                <div data-aos='fade-up' className="absolute top-0 left-0 w-full h-full z-10 flex items-center gap-5">
                     <div className="w-1/2 pl-40">
                         <div className="flex gap-5 items-center">
                             <img className="w-24" src="https://static-00.iconduck.com/assets.00/tensorflow-icon-1911x2048-1m2s54vn.png" alt="" />
@@ -377,6 +341,19 @@ export default function HomePage({ title }) {
                     </div>
                 </div>
             </div>
+            <div className="relative w-full h-60 overflow-hidden flex items-center justify-center">
+                <img className="absolute top-0 left-0 w-full -z-50 opacity-50" src="/bg/grid-pattern-2.png" alt="" />
+                <div className="absolute top-0 left-0 w-full flex justify-center">
+                    <div className="w-[1000px] h-[400px] rounded-full bg-rose-500 translate-y-[300px] blur-[100px]"></div>
+                </div>
+                <div className="flex gap-10 items-center">
+                    <img src="https://lh3.googleusercontent.com/W7tbJACxk87bqcJTyOpnb_bN8YkinnVdymXeDHlZpoR9IGuYqBCIX9SckYwU-GNkpkVxANv6HfbJfV99GW72tSugR5t2sjC8-BCzXQ=w600" alt="" />
+                    <img src="https://lh3.googleusercontent.com/kiohg3T6ccSMpQ_YXCkSWvjlanIgvXgqpFhOLGhFFrA7D3L9udIy-41618GxASYVv2I52E3rXYuynHGMTj3wJqKZUTn20XPkzUL14rdPh_g_Chyj5HQ=w600" alt="" />
+                    <img src="https://lh3.googleusercontent.com/-jSul-Vi92DmUBazZSfzSx1aG4QA623quEOW6dBXldYbkV3b6KSgp12LDoN7XYEL5W78usVmVknRviz8dYpskapNA9FHwiRPU9uAIBA=w600" alt="" />
+                    <img className="w-72" src="https://lh3.googleusercontent.com/NtORZkpsdeRJDkdA4DdUYwMUdpL1pNNO1HOVby1F6Qst1jwx6yVRkDmHJeaOtWzFLQWMPZxU_XFurb3646KdxYX8n7cYNoJeC0kpiVOhPWhayI5Z6e0X=w600" alt="" />
+                </div>
+            </div>
+
         </div>
     )
 }
