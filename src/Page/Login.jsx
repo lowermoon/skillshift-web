@@ -143,7 +143,7 @@ export default function Login() {
                         </Link>
                     </p>
                     <p  className="font-quicksand text-zinc-700">
-                        Lupa Password? <Link to={'/register'} className="text-yellow-500 font-bold hover:text-yellow-600">
+                        Lupa Password? <Link to={'/forgot'} className="text-yellow-500 font-bold hover:text-yellow-600">
                             Ganti disini
                         </Link>
                     </p>
