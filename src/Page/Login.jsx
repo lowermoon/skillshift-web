@@ -40,7 +40,7 @@ export default function Login() {
         return mySwal.fire({
             html: (
                 <>
-                    <h1 className="text-yellow-500 font-nunito font-bold text-2xl text-2xl">
+                    <h1 className="text-yellow-500 font-nunito font-bold text-2xl">
                         Memproses data
                     </h1>
                     <p className="text-zinc-700 font-quicksand">

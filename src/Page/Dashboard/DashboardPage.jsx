@@ -1,15 +1,19 @@
-import { faClock, faCogs, faDoorOpen, faFile, faFileCirclePlus, faPeopleArrows, faTrash, faUserCog } from "@fortawesome/free-solid-svg-icons";
+import { faDoorOpen, faFile, faFileCirclePlus, faPeopleArrows, faUserCog } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import ProjectList from "../../Components/ProjectList";
+import NewProject from "./NewProject";
 
 const mySwal = withReactContent(Swal);
 export default function DashboardPage() {
     const navigate = useNavigate();
     const [user, setUser] = useState({});
+    const [project, setProject] = useState()
+    const [newPage, setNewPage] = useState(false);
     document.body.classList.add('bg-zinc-100');
 
     const logOut = async () => {
@@ -41,24 +45,40 @@ export default function DashboardPage() {
         })
     }
 
+    const getUser = async () => {
+        try {
+            const { data } = await axios.get('https://api.skillshift.my.id/api/profile', {
+                withCredentials: true
+            })
+            console.log(data);
+            setUser(data);
+        } catch (error) {
+            console.log(error.response);
+        }
+    }
+
+    const getProject = async () => {
+        try {
+            const { data } = await axios.get('https://api.skillshift.my.id/api/projectUser', {
+                withCredentials: true
+            })
+            console.log(data);
+            setProject(state => state = data.result.project);
+        } catch (error) {
+            console.log(error.response);
+        }
+    }
+
     useEffect(() => {
         if(!localStorage.getItem('token')) navigate('/login');
-        const getUser = async () => {
-            try {
-                const { data } = await axios.get('https://api.skillshift.my.id/api/profile', {
-                    withCredentials: true
-                })
-                console.log(data);
-                setUser(data);
-            } catch (error) {
-                console.log(error.response);
-            }
-        }
+        
+        getProject();
         getUser();
     }, [])
 
     return (
         <div className="flex justify-center w-full">
+            <NewProject newPage={newPage} setNewPage={setNewPage} getProject={getProject} />
             <div className="w-2/3 p-10 flex gap-5 ">
                 <div className="w-4/6 relative overflow-auto h-auto max-h-[650px] space-y-5">
                     <div className="w-full rounded-2xl p-5 border flex items-center gap-5">
@@ -84,7 +104,7 @@ export default function DashboardPage() {
                         <div className="w-1/4 border"></div>
                     </div>
                     <div className="my-5 w-full rounded-2xl bg-zinc-700 p-5 flex justify-center">
-                        <Link to={'/project/new'} className="flex rounded-2xl p-2 hover:bg-zinc-600 gap-4 w-1/2">
+                        <button type="button" onClick={() => setNewPage(state => !state)} className="flex rounded-2xl p-2 hover:bg-zinc-600 gap-4 w-1/2">
                             <div className="flex items-center justify-center w-1/6 h-10 rounded-lg bg-zinc-900 text-yellow-400">
                                 <FontAwesomeIcon icon={faFileCirclePlus} />
                             </div>
@@ -96,7 +116,7 @@ export default function DashboardPage() {
                                     Buatlah proyek baru anda untuk memulai
                                 </p>
                             </article>
-                        </Link>
+                        </button>
                         <Link to={'/project'} className="flex rounded-2xl p-2 hover:bg-zinc-600 gap-4 w-1/2">
                             <div className="flex items-center justify-center w-1/6 h-10 rounded-lg bg-zinc-900 text-yellow-400">
                                 <FontAwesomeIcon icon={faPeopleArrows} />
@@ -117,28 +137,7 @@ export default function DashboardPage() {
                         </div>
                         Daftar Proyek
                     </h1>
-                    <div>
-                        <div className="w-full flex rounded-lg p-2 items-center hover:bg-zinc-200 gap-5 group">
-                            <p className="flex items-center gap-2 w-1/6 font-quicksand text-sm text-zinc-700">
-                                <FontAwesomeIcon icon={faClock} />
-                                20/11/2021
-                            </p>
-                            <p className="font-bold text-zinc-700 font-nunito text-sm w-3/6">
-                                Joki Mobile Legends
-                            </p>
-                            <p className="w-1/6 font-bold text-zinc-700 font-nunito text-sm">
-                                Moba
-                            </p>
-                            <div className="w-1/6 flex justify-center items-center opacity-0 group-hover:opacity-100">
-                                <Link to={'/project/edit'} className="hover:bg-zinc-300 rounded-lg p-1 w-10 h-10 flex items-center justify-center">
-                                    <FontAwesomeIcon icon={faCogs} className="text-yellow-600 w-6 h-6" />
-                                </Link>
-                                <Link to={'project/delete'} className="hover:bg-zinc-300 rounded-lg p-1 w-10 h-10 flex items-center justify-center">
-                                    <FontAwesomeIcon icon={faTrash} className="text-red-600 w-5 h-5" />
-                                </Link>
-                            </div>
-                        </div>
-                    </div>
+                    <ProjectList projects={project} />
                 </div>
                 <div className="w-2/6 p-5 bg-zinc-800 rounded-2xl h-fit">
                     <div className="flex flex-col items-center w-full">
