@@ -1,9 +1,62 @@
 import { faClock, faCogs, faDoorOpen, faFile, faFileCirclePlus, faPeopleArrows, faTrash, faUserCog } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link } from "react-router-dom";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
+const mySwal = withReactContent(Swal);
 export default function DashboardPage() {
+    const navigate = useNavigate();
+    const [user, setUser] = useState({});
     document.body.classList.add('bg-zinc-100');
+
+    const logOut = async () => {
+        mySwal.fire({
+            icon: 'warning',
+            html: (
+                <h1 className="text-zinc-700 font-bold font-nunito text-2xl">
+                    Apakah Anda Yakin?
+                </h1>
+            ),
+            confirmButtonText: 'Ya, Saya Yakin',
+            confirmButtonColor: '#FBBF24',
+            showCancelButton: true,
+            cancelButtonColor: '#EF4444',
+            cancelButtonText: 'Batal',
+        }).then(async (result) => {
+            if(result.isConfirmed){
+                try {
+                    const {data} = await axios.post('https://api.skillshift.my.id/api/logout', {
+                        withCredentials: true
+                    })
+                    console.log(data);
+                    localStorage.removeItem('token');
+                    navigate('/login');
+                } catch (error) {
+                    console.log(error.response);
+                }
+            }
+        })
+    }
+
+    useEffect(() => {
+        if(!localStorage.getItem('token')) navigate('/login');
+        const getUser = async () => {
+            try {
+                const { data } = await axios.get('https://api.skillshift.my.id/api/profile', {
+                    withCredentials: true
+                })
+                console.log(data);
+                setUser(data);
+            } catch (error) {
+                console.log(error.response);
+            }
+        }
+        getUser();
+    }, [])
+
     return (
         <div className="flex justify-center w-full">
             <div className="w-2/3 p-10 flex gap-5 ">
@@ -93,15 +146,15 @@ export default function DashboardPage() {
                             <img className="w-10 mr-3" src="/skillshift-logo-nobg.png" alt="" />
                             Skill <span className="text-yellow-500">Shift</span>
                         </h1>
-                        <img className="w-32 h-32 object-cover rounded-full" src="https://fahum.umsu.ac.id/wp-content/uploads/2023/11/biografi-lengkap-ibu-megawati-sukarnoputri-presiden-kelima-indonesia.jpg" alt="" />
+                        <img className="w-32 h-32 object-cover rounded-full" src={user ? user.profile : 'https://akcdn.detik.net.id/visual/2023/12/17/presiden-jokowi-bersama-perdana-menteri-jepang-fumio-kishida-dan-para-pemimpin-negara-asia-tenggara-dalam-ktt-perayaan-50-tahu-1_169.jpeg?w=400&q=90'} alt="" />
                         <h1 className="font-quicksand text-yellow-500 font-bold text-2xl">
-                            Ziyad Jahizh K
+                            {user ? user.name : 'No Full Name'}
                         </h1>
                         <p className="text-zinc-400 font-quicksand">
-                            kakangtea74@gmail.com
+                            {user ? user.email : 'No Email'}
                         </p>
                         <p className="px-2 py-1 rounded-lg bg-zinc-700 font-nunito font-bold text-sm text-cyan-100">
-                           1000 Exp 
+                           1000 Special Points 
                         </p>
                         <hr className="my-5 border-zinc-500 w-full" />
                         <div className="flex justify-center items-center">
@@ -109,10 +162,10 @@ export default function DashboardPage() {
                                 <FontAwesomeIcon icon={faUserCog} />
                                 Ubah Profile
                             </Link>
-                            <Link className="flex items-center gap-2 text-rose-500 hover:bg-zinc-700 px-2 py-1 rounded-lg font-nunito">
+                            <button type="button" onClick={() => logOut()} className="flex items-center gap-2 text-rose-500 hover:bg-zinc-700 px-2 py-1 rounded-lg font-nunito">
                                 <FontAwesomeIcon icon={faDoorOpen} />
                                 Keluar
-                            </Link>
+                            </button>
                         </div>
                     </div>
                 </div>
