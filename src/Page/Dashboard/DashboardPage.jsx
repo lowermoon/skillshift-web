@@ -32,10 +32,9 @@ export default function DashboardPage() {
         }).then(async (result) => {
             if(result.isConfirmed){
                 try {
-                    const {data} = await axios.post('https://api.skillshift.my.id/api/logout', {
+                    await axios.post('https://api.skillshift.my.id/api/logout', {
                         withCredentials: true
                     })
-                    console.log(data);
                     localStorage.removeItem('token');
                     navigate('/login');
                 } catch (error) {
@@ -62,7 +61,6 @@ export default function DashboardPage() {
             const { data } = await axios.get('https://api.skillshift.my.id/api/projectUser', {
                 withCredentials: true
             })
-            console.log(data);
             setProject(state => state = data.result.project);
         } catch (error) {
             console.log(error.response);
@@ -137,7 +135,7 @@ export default function DashboardPage() {
                         </div>
                         Daftar Proyek
                     </h1>
-                    <ProjectList projects={project} />
+                    <ProjectList projects={project} getProject={getProject} />
                 </div>
                 <div className="w-2/6 p-5 bg-zinc-800 rounded-2xl h-fit">
                     <div className="flex flex-col items-center w-full">
@@ -153,7 +151,7 @@ export default function DashboardPage() {
                             {user ? user.email : 'No Email'}
                         </p>
                         <p className="px-2 py-1 rounded-lg bg-zinc-700 font-nunito font-bold text-sm text-cyan-100">
-                           1000 Special Points 
+                           {user ? user.point : '0'} Special Points 
                         </p>
                         <hr className="my-5 border-zinc-500 w-full" />
                         <div className="flex justify-center items-center">

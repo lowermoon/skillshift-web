@@ -2,9 +2,54 @@ import React from 'react';
 import { faClock, faCogs, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
+import axios from 'axios';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
-export default function ProjectList({projects}) {
-    console.log(typeof(projects));
+const mySwal = withReactContent(Swal);
+export default function ProjectList({projects, getProject}) {
+    const deleteProject = async (id) => {
+        try {
+            return mySwal.fire({
+                icon: 'warning',
+                html: (
+                    <h1 className="text-zinc-700 font-bold font-nunito text-2xl">
+                        Apakah Anda Yakin?
+                    </h1>
+                ),
+                confirmButtonText: 'Ya, Saya Yakin',
+                confirmButtonColor: '#FBBF24',
+                showCancelButton: true,
+                cancelButtonColor: '#EF4444',
+                cancelButtonText: 'Batal',
+            }).then(async (result) => {
+                if(result.isConfirmed){
+                    try {
+                        await axios.delete(`https://api.skillshift.my.id/api/deleteProject?project_id=${id}`, {
+                            withCredentials: true
+                        })
+                        getProject();
+                        mySwal.fire({
+                            icon: 'success',
+                            html: (
+                                <h1 className="text-zinc-700 font-bold font-nunito text-2xl">
+                                    Berhasil Menghapus Proyek
+                                </h1>
+                            ),
+                            confirmButtonText: 'Oke',
+                            confirmButtonColor: '#FBBF24',
+                        })
+                    } catch (error) {
+                        console.log(error.response);
+                    }
+                }
+            })
+            
+        } catch (error) {
+            console.log(error.response);
+        }
+    }
+
     return projects ? (
         <>
             {projects.map((item, index) => (
@@ -23,9 +68,9 @@ export default function ProjectList({projects}) {
                         <Link to={'/project/edit'} className="hover:bg-zinc-300 rounded-lg p-1 w-10 h-10 flex items-center justify-center">
                             <FontAwesomeIcon icon={faCogs} className="text-yellow-600 w-6 h-6" />
                         </Link>
-                        <Link to={`/api/deleteProject?project_id`} className="hover:bg-zinc-300 rounded-lg p-1 w-10 h-10 flex items-center justify-center">
+                        <button type='button' onClick={() => deleteProject(item.project_id)} className="hover:bg-zinc-300 rounded-lg p-1 w-10 h-10 flex items-center justify-center">
                             <FontAwesomeIcon icon={faTrash} className="text-red-600 w-5 h-5" />
-                        </Link>
+                        </button>
                     </div>
                 </div>
              ))} 
