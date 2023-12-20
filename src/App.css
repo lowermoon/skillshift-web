@@ -11,3 +11,30 @@
 .font-quicksand {
   font-family: 'Quicksand', sans-serif;
 }
+
+
+
+* {
+  --sb-track-color: #ffffff;
+  --sb-thumb-color: #656565;
+  --sb-size: 5px;
+
+  scrollbar-color: var(--sb-thumb-color) 
+                   var(--sb-track-color);
+}
+
+*::-webkit-scrollbar {
+  width: var(--sb-size) 
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--sb-track-color);
+  border-radius: 10px;
+  opacity: 0;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--sb-thumb-color);
+  border-radius: 10px;
+  
+  }

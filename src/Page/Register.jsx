@@ -55,7 +55,7 @@ export default function Register() {
         const dataBody = {
             username: username,
             password: password,
-            nama: nama,
+            fullName: nama,
             email: email
         }
 

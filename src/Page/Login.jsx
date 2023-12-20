@@ -137,12 +137,12 @@ export default function Login() {
                 </form>
                 <hr className="my-5 w-full" />
                 <div className="flex flex-col w-full items-center gap-5">
-                    <p  className="font-quicksand text-zinc-700">
+                    <p className="font-quicksand text-zinc-700">
                         Belum punya akun? <Link to={'/register'} className="text-yellow-500 font-bold hover:text-yellow-600">
                             Daftar disini
                         </Link>
                     </p>
-                    <p  className="font-quicksand text-zinc-700">
+                    <p className="font-quicksand text-zinc-700">
                         Lupa Password? <Link to={'/forgot'} className="text-yellow-500 font-bold hover:text-yellow-600">
                             Ganti disini
                         </Link>
