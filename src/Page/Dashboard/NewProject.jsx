@@ -20,7 +20,6 @@ export default function NewProject({newPage, setNewPage, getProject}) {
             const { data } = await axios.get('https://api.skillshift.my.id/api/category', {
                 withCredentials: true
             })
-            console.log(data.data);
             setCategories(data.data);
         } catch (error) {
             console.log(error.response);

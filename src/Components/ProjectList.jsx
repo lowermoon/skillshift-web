@@ -1,13 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { faClock, faCogs, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link } from "react-router-dom";
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 
 const mySwal = withReactContent(Swal);
-export default function ProjectList({projects, getProject}) {
+export default function ProjectList({projects, getProject, selectedProject, setSelectedProject, editProject, setEditProject}) {
     const deleteProject = async (id) => {
         try {
             return mySwal.fire({
@@ -50,6 +49,13 @@ export default function ProjectList({projects, getProject}) {
         }
     }
 
+    const selectProject = (item) => {
+        setSelectedProject(state => state = item);
+        setEditProject(state => !state)
+    }
+
+
+
     return projects ? (
         <>
             {projects.map((item, index) => (
@@ -65,9 +71,9 @@ export default function ProjectList({projects, getProject}) {
                         {item.project_category}
                     </p>
                     <div className="w-1/6 flex justify-center items-center opacity-0 group-hover:opacity-100">
-                        <Link to={'/project/edit'} className="hover:bg-zinc-300 rounded-lg p-1 w-10 h-10 flex items-center justify-center">
+                        <button type='button' onClick={() => selectProject(item)}  className="hover:bg-zinc-300 rounded-lg p-1 w-10 h-10 flex items-center justify-center">
                             <FontAwesomeIcon icon={faCogs} className="text-yellow-600 w-6 h-6" />
-                        </Link>
+                        </button>
                         <button type='button' onClick={() => deleteProject(item.project_id)} className="hover:bg-zinc-300 rounded-lg p-1 w-10 h-10 flex items-center justify-center">
                             <FontAwesomeIcon icon={faTrash} className="text-red-600 w-5 h-5" />
                         </button>

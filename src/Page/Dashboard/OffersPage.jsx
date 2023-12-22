@@ -3,6 +3,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import anime from "animejs"
 import axios from "axios"
 import React, { useEffect, useState } from "react"
+import Swal from "sweetalert2"
+import withReactContent from "sweetalert2-react-content"
+
+const mySwal = withReactContent(Swal);
 
 export default function OffersPage({ offerPage, setOfferPage, getProject, projects }) {
 
@@ -13,15 +17,11 @@ export default function OffersPage({ offerPage, setOfferPage, getProject, projec
             const { data } = await axios.get(`https://api.skillshift.my.id/api/allOffer?project_id=${project_id}`, {
                 withCredentials: true
             })
-            console.log(data);
             setOffers(data.result.project);
-            
         } catch (error) {
             console.log(error.response);
         }
     }
-
-    
 
     const closeOfferPage = () => {
         anime.timeline({
@@ -70,6 +70,43 @@ export default function OffersPage({ offerPage, setOfferPage, getProject, projec
             })
         }
     }, [offers])
+
+    const offerProject = async (project_id, freelancer_id, offer_price) => {
+        mySwal.fire({
+            icon: 'warning',
+            html: (
+                <h1 className="text-zinc-700 font-bold font-nunito text-2xl">
+                    Apakah Anda Yakin?
+                </h1>
+            ),
+            confirmButtonText: 'Ya, Saya Yakin',
+            confirmButtonColor: '#FBBF24',
+            showCancelButton: true,
+            cancelButtonColor: '#EF4444',
+            cancelButtonText: 'Batal',
+        }).then(async (result) => {
+            if(result.isConfirmed){
+                try {
+                    await axios.post(`https://api.skillshift.my.id/api/acceptOffer?project_id=${project_id}&freelancer_id=${freelancer_id}&price=${offer_price}`,{}, {
+                        withCredentials: true
+                    })
+                    // getOffers(project_id);
+                    mySwal.fire({
+                        icon: 'success',
+                        html: (
+                            <h1 className="text-zinc-700 font-bold font-nunito text-2xl">
+                                Berhasil Mengirim Penawaran
+                            </h1>
+                        ),
+                        confirmButtonText: 'Oke',
+                        confirmButtonColor: '#FBBF24',
+                    })
+                } catch (error) {
+                    console.log(error.response);
+                }
+            } 
+        })
+    }
 
 
     return offerPage && (
@@ -126,7 +163,7 @@ export default function OffersPage({ offerPage, setOfferPage, getProject, projec
                                         Rp {formatter.format(item.offer_price)}
                                     </p>
                                 </div>
-                                <button className="w-1/6 rounded-lg hover:bg-green-100 flex flex-col items-center justify-center text-green-700 opacity-0 group-hover:opacity-100 font-bold">
+                                <button onClick={() => offerProject(item.project_id, item.freelancerId, item.offer_price)} type="button" className="w-1/6 rounded-lg hover:bg-green-100 flex flex-col items-center justify-center text-green-700 opacity-0 group-hover:opacity-100 font-bold">
                                     <FontAwesomeIcon icon={faCheckSquare} />
                                     Terima
                                 </button>
