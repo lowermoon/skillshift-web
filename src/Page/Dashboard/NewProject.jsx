@@ -183,6 +183,7 @@ export default function NewProject({newPage, setNewPage, getProject}) {
                     </div>
                     <div className="relative w-2/3 mt-5">
                         <select type="text" onChange={e => setKategori(e.target.value)} autoComplete="off"  className="w-full outline-none rounded-lg h-10 border border-zinc-300 bg-zinc-200 px-5 font-bold focus:border-zinc-500" >
+                            <option value="choose">-- PILIH KATEGORI ANDA --</option>
                             {categories && categories.map((item, index) => (
                                 <option key={index} value={item.CATEGORY}>{item.CATEGORY}</option>
                             ))}

@@ -8,6 +8,7 @@ import withReactContent from "sweetalert2-react-content";
 import ProjectList from "../../Components/ProjectList";
 import NewProject from "./NewProject";
 import OffersPage from "./OffersPage";
+import EditProfilePage from "../EditProfilePage";
 
 const mySwal = withReactContent(Swal);
 export default function DashboardPage() {
@@ -16,6 +17,7 @@ export default function DashboardPage() {
     const [project, setProject] = useState()
     const [newPage, setNewPage] = useState(false);
     const [offerPage, setOfferPage] = useState(false);
+    const [editProfile, setEditProfile] = useState(false);
     document.body.classList.add('bg-zinc-100');
 
     const logOut = async () => {
@@ -37,6 +39,7 @@ export default function DashboardPage() {
                     await axios.post('https://api.skillshift.my.id/api/logout', {
                         withCredentials: true
                     })
+                    setUser({});
                     localStorage.removeItem('token');
                     navigate('/login');
                 } catch (error) {
@@ -52,7 +55,7 @@ export default function DashboardPage() {
                 withCredentials: true
             })
             console.log(data);
-            setUser(data);
+            setUser(state => state = data);
         } catch (error) {
             console.log(error.response);
         }
@@ -80,6 +83,7 @@ export default function DashboardPage() {
         <div className="flex justify-center w-full">
             <NewProject newPage={newPage} setNewPage={setNewPage} getProject={getProject} />
             <OffersPage offerPage={offerPage} setOfferPage={setOfferPage} getProject={getProject} projects={project}/>
+            <EditProfilePage editProfile={editProfile} setEditProfile={setEditProfile} user={user} getUser={getUser}/>
             <div className="w-2/3 p-10 flex gap-5 ">
                 <div className="w-4/6 relative overflow-auto h-auto max-h-[650px] space-y-5">
                     <div className="w-full rounded-2xl p-5 border flex items-center gap-5">
@@ -146,7 +150,7 @@ export default function DashboardPage() {
                             <img className="w-10 mr-3" src="/skillshift-logo-nobg.png" alt="" />
                             Skill <span className="text-yellow-500">Shift</span>
                         </h1>
-                        <img className="w-32 h-32 object-cover rounded-full" src={user ? user.profile : 'https://akcdn.detik.net.id/visual/2023/12/17/presiden-jokowi-bersama-perdana-menteri-jepang-fumio-kishida-dan-para-pemimpin-negara-asia-tenggara-dalam-ktt-perayaan-50-tahu-1_169.jpeg?w=400&q=90'} alt="" />
+                        <img className="w-32 h-32 object-cover rounded-full" src={user ? user.profile : ''} alt="" />
                         <h1 className="font-quicksand text-yellow-500 font-bold text-2xl">
                             {user ? user.name : 'No Full Name'}
                         </h1>
@@ -158,10 +162,10 @@ export default function DashboardPage() {
                         </p>
                         <hr className="my-5 border-zinc-500 w-full" />
                         <div className="flex justify-center items-center">
-                            <Link className="flex items-center gap-2 text-yellow-500 hover:bg-zinc-700 px-2 py-1 rounded-lg font-nunito">
+                            <button type='button' onClick={() => setEditProfile(state => !state)} className="flex items-center gap-2 text-yellow-500 hover:bg-zinc-700 px-2 py-1 rounded-lg font-nunito">
                                 <FontAwesomeIcon icon={faUserCog} />
                                 Ubah Profile
-                            </Link>
+                            </button>
                             <button type="button" onClick={() => logOut()} className="flex items-center gap-2 text-rose-500 hover:bg-zinc-700 px-2 py-1 rounded-lg font-nunito">
                                 <FontAwesomeIcon icon={faDoorOpen} />
                                 Keluar

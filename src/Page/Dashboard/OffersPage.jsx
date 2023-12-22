@@ -56,8 +56,6 @@ export default function OffersPage({ offerPage, setOfferPage, getProject, projec
                 easing: 'easeInOutQuad'
             })
         }
-
-        
     }, [offerPage])
 
     useEffect(() => {
@@ -110,9 +108,9 @@ export default function OffersPage({ offerPage, setOfferPage, getProject, projec
                             </button>
                         ))}
                     </div>
-                    <div className="w-4/6 relative overflow-auto h-[600px] p-2 space-y-5">
+                    <div className="w-4/6 relative overflow-auto h-[600px] p-2 space-y-5 bg-gradient-to-r from-zinc-200 to-white">
                         { offers && offers.map((item, index) => (
-                            <div key={index} id='offer_list' className="flex p-2 rounded-2xl border group">
+                            <div key={index} id='offer_list' className="flex p-2 rounded-2xl border group bg-white">
                                 <div className="w-1/6 flex justify-center">
                                     <img className="w-20 h-20 rounded-full object-cover" src={item.imgUrl} alt="" />
                                 </div>
