@@ -13,6 +13,19 @@ export default function NewProject({newPage, setNewPage, getProject}) {
     const [kategori, setKategori] = useState('');
     const [deskripsi, setDeskripsi] = useState('');
     const [deadline, setDeadline] = useState('');
+    const [categories, setCategories] = useState();
+
+    const getCategories = async () => {
+        try {
+            const { data } = await axios.get('https://api.skillshift.my.id/api/category', {
+                withCredentials: true
+            })
+            console.log(data.data);
+            setCategories(data.data);
+        } catch (error) {
+            console.log(error.response);
+        }
+    }
     
     const closePage = () => {
         anime.timeline({
@@ -32,6 +45,9 @@ export default function NewProject({newPage, setNewPage, getProject}) {
     
     }
 
+    useEffect(() => {
+        getCategories();
+    }, [])
 
     useEffect(() => {
         if(newPage) {
@@ -166,7 +182,11 @@ export default function NewProject({newPage, setNewPage, getProject}) {
                         </p>
                     </div>
                     <div className="relative w-2/3 mt-5">
-                        <input type="text" onChange={e => setKategori(e.target.value)} autoComplete="off"  className="w-full outline-none rounded-lg h-10 border border-zinc-300 bg-zinc-200 px-5 font-bold focus:border-zinc-500" />
+                        <select type="text" onChange={e => setKategori(e.target.value)} autoComplete="off"  className="w-full outline-none rounded-lg h-10 border border-zinc-300 bg-zinc-200 px-5 font-bold focus:border-zinc-500" >
+                            {categories && categories.map((item, index) => (
+                                <option key={index} value={item.CATEGORY}>{item.CATEGORY}</option>
+                            ))}
+                        </select>
                         <p className="absolute top-0 left-0 w-fit px-2 rounded-lg bg-zinc-200 text-zinc-700 tracking-tighter text-xs font-bold translate-x-3 -translate-y-2.5">
                             Kategori
                         </p>

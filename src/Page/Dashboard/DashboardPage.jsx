@@ -7,6 +7,7 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import ProjectList from "../../Components/ProjectList";
 import NewProject from "./NewProject";
+import OffersPage from "./OffersPage";
 
 const mySwal = withReactContent(Swal);
 export default function DashboardPage() {
@@ -14,6 +15,7 @@ export default function DashboardPage() {
     const [user, setUser] = useState({});
     const [project, setProject] = useState()
     const [newPage, setNewPage] = useState(false);
+    const [offerPage, setOfferPage] = useState(false);
     document.body.classList.add('bg-zinc-100');
 
     const logOut = async () => {
@@ -77,6 +79,7 @@ export default function DashboardPage() {
     return (
         <div className="flex justify-center w-full">
             <NewProject newPage={newPage} setNewPage={setNewPage} getProject={getProject} />
+            <OffersPage offerPage={offerPage} setOfferPage={setOfferPage} getProject={getProject} projects={project}/>
             <div className="w-2/3 p-10 flex gap-5 ">
                 <div className="w-4/6 relative overflow-auto h-auto max-h-[650px] space-y-5">
                     <div className="w-full rounded-2xl p-5 border flex items-center gap-5">
@@ -115,7 +118,7 @@ export default function DashboardPage() {
                                 </p>
                             </article>
                         </button>
-                        <Link to={'/project'} className="flex rounded-2xl p-2 hover:bg-zinc-600 gap-4 w-1/2">
+                        <button type="button" onClick={() => setOfferPage(state => !state)}  className="flex rounded-2xl p-2 hover:bg-zinc-600 gap-4 w-1/2">
                             <div className="flex items-center justify-center w-1/6 h-10 rounded-lg bg-zinc-900 text-yellow-400">
                                 <FontAwesomeIcon icon={faPeopleArrows} />
                             </div>
@@ -127,7 +130,7 @@ export default function DashboardPage() {
                                     Daftar Tawaran dari Proyek-proyek yang sudah anda buat.
                                 </p>
                             </article>
-                        </Link>
+                        </button>
                     </div>
                     <h1 className="font-nunito font-bold text-zinc-700 text-2xl flex items-center gap-5">
                         <div className="flex items-center justify-center w-10 h-10 bg-zinc-700 rounded-full">
